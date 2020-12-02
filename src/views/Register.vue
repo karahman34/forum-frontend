@@ -4,10 +4,7 @@
       <div class="column is-half-desktop">
         <!-- Header Text -->
         <div class="has-text-centered">
-          <p class="title mb-0">Welcome,</p>
-          <span class="has-text-grey subtitle ml-2"
-            >Please enter your username and password.</span
-          >
+          <p class="title mb-0">Create an account.</p>
         </div>
 
         <!-- The Card -->
@@ -22,26 +19,48 @@
             ></alert>
 
             <!-- The Form -->
-            <form @submit.prevent="goLogin">
-              <!-- Username -->
+            <form @submit.prevent="goRegister">
+              <!-- E-Mail -->
               <div class="field">
-                <label class="label">Email / Username</label>
+                <label class="label">Email</label>
                 <div class="control has-icons-left">
                   <input
-                    v-model="form.email_or_username"
+                    v-model="form.email"
                     class="input"
                     :class="{
-                      'is-danger': form_errors.email_or_username !== null
+                      'is-danger': form_errors.email !== null
+                    }"
+                    type="email"
+                    placeholder="Email"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </div>
+                <p class="help is-danger" v-if="form_errors.email">
+                  {{ form_errors.email }}
+                </p>
+              </div>
+
+              <!-- Username -->
+              <div class="field">
+                <label class="label">Username</label>
+                <div class="control has-icons-left">
+                  <input
+                    v-model="form.username"
+                    class="input"
+                    :class="{
+                      'is-danger': form_errors.username !== null
                     }"
                     type="text"
-                    placeholder="Email or Username"
+                    placeholder="Username"
                   />
                   <span class="icon is-small is-left">
                     <i class="fas fa-user"></i>
                   </span>
                 </div>
-                <p class="help is-danger" v-if="form_errors.email_or_username">
-                  {{ form_errors.email_or_username }}
+                <p class="help is-danger" v-if="form_errors.username">
+                  {{ form_errors.username }}
                 </p>
               </div>
 
@@ -73,37 +92,55 @@
                   </span>
                 </div>
                 <!-- Help Block -->
-                <div class="help columns is-mobile">
-                  <!-- Help Message -->
-                  <div class="column is-half">
-                    <p class="help is-danger" v-if="form_errors.password">
-                      {{ form_errors.password }}
-                    </p>
-                  </div>
+                <p class="help is-danger" v-if="form_errors.password">
+                  {{ form_errors.password }}
+                </p>
+              </div>
 
-                  <!-- Forgot Passowrd -->
-                  <div class="column is-half">
-                    <div class="is-flex is-justify-content-flex-end">
-                      <a href="#" class="mt-1">Forgot Password ?</a>
-                    </div>
-                  </div>
+              <!-- Password Confirmation -->
+              <div class="field">
+                <label class="label">Password Confirmation</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    v-model="form.password_confirmation"
+                    class="input"
+                    :type="showPasswordConfirmation ? 'text' : 'password'"
+                    placeholder="Password"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                  <span
+                    class="icon is-small is-right"
+                    style="cursor: pointer; pointer-events: initial"
+                    @click="
+                      showPasswordConfirmation = !showPasswordConfirmation
+                    "
+                  >
+                    <i
+                      class="fas"
+                      :class="[
+                        showPasswordConfirmation ? 'fa-eye' : 'fa-eye-slash'
+                      ]"
+                    ></i>
+                  </span>
                 </div>
               </div>
 
-              <!-- Login Button -->
+              <!-- Register Button -->
               <button
                 type="submit"
                 class="button is-success is-fullwidth"
                 :class="{ 'is-loading': loading }"
                 :disabled="loading"
               >
-                Login
+                Register
               </button>
 
               <!-- Register Anchor -->
               <p class="mb-0 mt-2">
-                You dont have an account ?
-                <router-link :to="{ name: 'Register' }">Register</router-link>
+                Already have an account ?
+                <router-link :to="{ name: 'Login' }">Login</router-link>
               </p>
             </form>
           </div>
@@ -126,31 +163,35 @@ export default {
   data() {
     return {
       form: {
-        email_or_username: null,
-        password: null
+        email: null,
+        username: null,
+        password: null,
+        password_confirmation: null
       },
       form_errors: {
-        email_or_username: null,
+        email: null,
+        username: null,
         password: null
       },
       loading: false,
       showPassword: false,
+      showPasswordConfirmation: false,
       alertError: null
     }
   },
 
   methods: {
     ...mapActions('auth', {
-      loginAction: 'login'
+      registerAction: 'register'
     }),
-    async goLogin() {
+    async goRegister() {
       hideValidationErrors(this.form_errors)
       this.loading = true
       this.alertError = null
 
       try {
         // Dispatch vuex action
-        await this.loginAction(this.form)
+        await this.registerAction(this.form)
 
         this.$router.replace({
           name: 'Home'
@@ -160,11 +201,8 @@ export default {
 
         if (errCode === 422) {
           showValidationErrors(this.form_errors, err.response.data)
-        } else if (errCode === 401) {
-          this.alertError = err.response.data.message
         } else {
-          this.alertError =
-            'Failed to authenticate user, please try again later.'
+          this.alertError = 'Failed to register user, please try again later.'
         }
       } finally {
         this.loading = false

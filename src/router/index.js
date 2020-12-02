@@ -22,6 +22,16 @@ const routes = [
       guest: true
     },
     component: () => import('@/views/Login')
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    meta: {
+      title: 'Register',
+      layout: 'auth',
+      guest: true
+    },
+    component: () => import('@/views/Register')
   }
 ]
 
