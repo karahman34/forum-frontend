@@ -1,12 +1,32 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <!-- Layout -->
+    <component :is="layout">
+      <!-- Router View -->
+      <router-view />
+    </component>
   </div>
 </template>
+
+<script>
+import AuthLayout from '@/layouts/auth/Template'
+import DefaultLayout from '@/layouts/default/Template'
+
+export default {
+  components: {
+    AuthLayout,
+    DefaultLayout
+  },
+
+  computed: {
+    layout() {
+      const layoutName = this.$route.meta?.layout
+
+      return !layoutName ? 'default-layout' : `${layoutName}-layout`
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 @import './assets/sass/app';
