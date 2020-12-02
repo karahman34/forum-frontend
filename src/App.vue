@@ -8,4 +8,6 @@
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+@import './assets/sass/app';
+</style>
