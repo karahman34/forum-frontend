@@ -2,9 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import { routerGuard } from './helpers/route'
 
 // Import Plugins
-import httpPlugin from './plugins/httpPlugin'
+import httpPlugin, {
+  tokenName,
+  expiredTokenName,
+  applyToken,
+  removeToken
+} from './plugins/httpPlugin'
 
 // Use Fontawesome
 import '@fortawesome/fontawesome-free/js/all.js'
@@ -18,6 +24,10 @@ Vue.use(httpPlugin)
 const runApp = () => {
   document.querySelector('#app').innerHTML = ''
 
+  // Add title & checking middleware
+  router.beforeEach(routerGuard)
+
+  // Make vue
   new Vue({
     router,
     store,
@@ -30,10 +40,30 @@ const initializeApp = () => {
   document.querySelector('#app').innerHTML = 'Loading...'
 
   // Check the user token
-  const userAuthToken = localStorage.getItem()
+  const userAuthToken = localStorage.getItem(tokenName)
+  const userAuthTokenExpiredDate = localStorage.getItem(expiredTokenName)
 
-  // Run the app
-  runApp()
+  if (userAuthToken && userAuthTokenExpiredDate) {
+    const dateNow = new Date()
+    const userTokenDate = new Date(userAuthTokenExpiredDate)
+
+    if (dateNow <= userTokenDate) {
+      // Set HTTP token
+      applyToken(userAuthToken)
+
+      // Get user details
+      store
+        .dispatch('auth/getUser')
+        .then(() => store.commit('auth/SET_LOGGED_IN', true))
+        .catch(() => removeToken())
+        .finally(() => runApp())
+    } else {
+      removeToken()
+      runApp()
+    }
+  } else {
+    runApp()
+  }
 }
 
 initializeApp()
