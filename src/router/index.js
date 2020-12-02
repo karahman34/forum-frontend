@@ -8,7 +8,20 @@ const routes = [
   {
     path: '/',
     name: 'Home',
+    meta: {
+      auth: true
+    },
     component: Home
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    meta: {
+      title: 'Login',
+      layout: 'auth',
+      guest: true
+    },
+    component: () => import('@/views/Login')
   }
 ]
 
