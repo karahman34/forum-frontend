@@ -1,5 +1,8 @@
 <template>
   <div>
+    <!-- Navbar -->
+    <nav-bar></nav-bar>
+
     <section class="section">
       <div class="container">
         <!-- Router View -->
@@ -8,6 +11,16 @@
     </section>
   </div>
 </template>
+
+<script>
+import NavBar from './_NavBar'
+
+export default {
+  components: {
+    NavBar
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 html,
