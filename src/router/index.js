@@ -8,9 +8,6 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    meta: {
-      auth: true
-    },
     component: Home
   },
   {
