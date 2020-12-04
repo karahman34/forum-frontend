@@ -19,13 +19,14 @@
     <filter-posts class="mt-1 mb-3" @filter="filter = $event"></filter-posts>
 
     <!-- Loading get posts -->
-    <div
-      class="mt-6 title has-text-centered has-text-weight-medium has-text-grey-dark"
-      v-if="getPostsLoading && posts === null"
-    >
-      <i class="fas fa-spinner fa-spin"></i>
-      <span class="ml-3">Getting posts...</span>
-    </div>
+    <template v-if="getPostsLoading && posts === null">
+      <div
+        class="mt-6 title has-text-centered has-text-weight-medium has-text-grey-dark"
+      >
+        <i class="fas fa-spinner fa-spin"></i>
+        <span class="ml-3">Getting posts...</span>
+      </div>
+    </template>
 
     <!-- No result -->
     <div
