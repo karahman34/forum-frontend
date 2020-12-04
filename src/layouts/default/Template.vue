@@ -23,10 +23,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-html,
-body {
-  width: 100%;
-  height: 100%;
-  background-color: #f1f1f1;
+section.section {
+  background-color: #f3f3f3;
 }
 </style>
