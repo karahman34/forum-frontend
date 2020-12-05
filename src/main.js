@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VueSanitize from 'vue-sanitize'
 import { routerGuard } from './helpers/route'
 
 // Import Plugins
@@ -20,6 +21,8 @@ Vue.config.productionTip = false
 
 // Use Http Plugins
 Vue.use(httpPlugin)
+// Use Sanitize
+Vue.use(VueSanitize)
 
 const runApp = () => {
   document.querySelector('#app').innerHTML = ''
