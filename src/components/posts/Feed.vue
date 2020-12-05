@@ -21,7 +21,14 @@
           </div>
 
           <!-- Title -->
-          <a href="#" class="is-block subtitle mb-1">{{ post.title }}</a>
+          <router-link
+            :to="{
+              name: 'Post',
+              params: { id: post.id, slug: post.title.replace(/\//g, '-') }
+            }"
+            class="is-block subtitle mb-1"
+            >{{ post.title }}</router-link
+          >
 
           <!-- Tags -->
           <span

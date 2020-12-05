@@ -11,6 +11,9 @@ export default {
   create(payload) {
     return http.post(`${prefix}`, payload)
   },
+  show(id) {
+    return http.get(`${prefix}/${id}`)
+  },
   update(id, payload) {
     return http.post(`${prefix}/${id}`, payload)
   },

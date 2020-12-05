@@ -29,6 +29,11 @@ const routes = [
       guest: true
     },
     component: () => import('@/views/Register')
+  },
+  {
+    path: '/post/:id/:slug',
+    name: 'Post',
+    component: () => import('@/views/Post')
   }
 ]
 
