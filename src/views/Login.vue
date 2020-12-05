@@ -152,9 +152,9 @@ export default {
         // Dispatch vuex action
         await this.loginAction(this.form)
 
-        this.$router.replace({
-          name: 'Home'
-        })
+        const redirectUrl = this.$route.query.from || { name: 'Home' }
+
+        this.$router.replace(redirectUrl)
       } catch (err) {
         const errCode = err?.response?.status
 
