@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: {
     post: {
@@ -82,20 +84,7 @@ export default {
       return this.post.solved.toLowerCase() === 'y'
     },
     postedTime() {
-      const days = [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-      ]
-      const date = new Date(this.post.created_at)
-
-      const day = days[date.getDay()]
-      const fullDate = date.toLocaleDateString()
-      return `${day},${fullDate}`
+      return moment(this.post.created_at).fromNow()
     }
   }
 }
