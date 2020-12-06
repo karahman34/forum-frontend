@@ -71,10 +71,18 @@
                   <span class="ml-2">Solve</span>
                 </div>
 
-                <div class="dropdown-item">
+                <router-link
+                  class="dropdown-item"
+                  :to="{
+                    name: 'Post.Edit',
+                    params: {
+                      id: post.id
+                    }
+                  }"
+                >
                   <i class="fas fa-pencil-alt"></i>
                   <span class="ml-2">Edit</span>
-                </div>
+                </router-link>
 
                 <div class="dropdown-item" @click="$emit('delete')">
                   <i class="fas fa-trash"></i>

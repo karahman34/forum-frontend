@@ -3,9 +3,7 @@
     <div class="divider my-1"></div>
 
     <!-- Body -->
-    <p class="body mb-2">
-      {{ post.body }}
-    </p>
+    <p class="body mb-2" v-html="cleanedBody"></p>
 
     <!-- Screenshots -->
     <div v-if="post.screenshots.length">
@@ -41,6 +39,12 @@ export default {
     post: {
       type: Object,
       required: true
+    }
+  },
+
+  computed: {
+    cleanedBody() {
+      return this.$sanitize(this.post.body)
     }
   }
 }

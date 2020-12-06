@@ -9,10 +9,13 @@
       </div>
 
       <!-- Right -->
-      <button class="button is-success has-text-weight-medium">
+      <router-link
+        :to="{ name: 'Post.Create' }"
+        class="button is-success has-text-weight-medium"
+      >
         <i class="fas fa-plus"></i>
         <span class="ml-2">Create Post</span>
-      </button>
+      </router-link>
     </div>
 
     <!-- Filter Posts -->
