@@ -31,6 +31,15 @@ const routes = [
     component: () => import('@/views/Register')
   },
   {
+    path: '/profile',
+    name: 'Profile',
+    meta: {
+      title: 'Profile',
+      auth: true
+    },
+    component: () => import('@/views/Profile')
+  },
+  {
     path: '/post',
     name: 'Post.Create',
     meta: {

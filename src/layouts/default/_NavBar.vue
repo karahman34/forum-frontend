@@ -83,10 +83,13 @@
                 <div class="dropdown-menu">
                   <div class="dropdown-content py-0">
                     <!-- Profile -->
-                    <div class="dropdown-item">
+                    <router-link
+                      class="dropdown-item"
+                      :to="{ name: 'Profile' }"
+                    >
                       <i class="fas fa-user icon"></i>
                       <a href="#" class="text">Profile</a>
-                    </div>
+                    </router-link>
                     <!-- Logout -->
                     <div
                       id="logout-container"
