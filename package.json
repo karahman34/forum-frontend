@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
+    "@johmun/vue-tags-input": "^2.1.0",
     "axios": "^0.21.0",
     "bulma": "^0.9.1",
     "core-js": "^3.6.5",
