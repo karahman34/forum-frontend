@@ -33,17 +33,28 @@ const routes = [
   {
     path: '/post',
     name: 'Post.Create',
+    meta: {
+      auth: true
+    },
     component: () => import('@/views/Post-Form.vue')
   },
   {
     path: '/post/:id',
     name: 'Post.Edit',
+    meta: {
+      auth: true
+    },
     component: () => import('@/views/Post-Form.vue')
   },
   {
     path: '/post/:id/:slug',
     name: 'Post',
     component: () => import('@/views/Post')
+  },
+  {
+    path: '/errors/:code',
+    name: 'Page.Error',
+    component: () => import('@/views/PageError')
   }
 ]
 

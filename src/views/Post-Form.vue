@@ -133,6 +133,7 @@ import { VueEditor } from 'vue2-editor'
 import { hideValidationErrors, showValidationErrors } from '@/helpers/form'
 import postApi from '@/api/postApi'
 import TagsInput from '@/components/TagsInput'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -176,6 +177,9 @@ export default {
   },
 
   computed: {
+    ...mapState('auth', {
+      auth: state => state.user
+    }),
     postId() {
       return this.$route.params?.id || null
     }
@@ -189,6 +193,9 @@ export default {
   },
 
   methods: {
+    checkOwner() {
+      return this.auth.id === this.post.author.id
+    },
     imageUploadHandler(event) {
       const images = event.target.files
 
@@ -255,6 +262,16 @@ export default {
         const { data } = res.data
 
         this.post = data
+
+        // Check owner
+        if (!this.checkOwner()) {
+          return this.$router.replace({
+            name: 'Page.Error',
+            params: {
+              code: 403
+            }
+          })
+        }
 
         // Sync post values
         Object.keys(this.form).forEach(field => {
