@@ -1,5 +1,5 @@
 <template>
-  <div class="card comment">
+  <div class="card comment" style="overflow: visible !important">
     <div class="card-content">
       <article class="media">
         <figure class="media-left">
@@ -9,60 +9,88 @@
         <div class="media-content">
           <div class="content">
             <!-- Header -->
-            <div
-              class="is-flex is-justify-content-space-between is-flex-wrap-wrap"
-            >
-              <!-- Left -->
+            <!-- Username -->
+            <strong class="mr-1">{{ comment.author.username }}</strong>
+            <!-- Posted Time -->
+            <small class="has-text-grey-dark">{{ postedTime }}</small>
+            <!-- Comment Body -->
+            <p class="mb-0 mt-1" v-html="cleanedBody"></p>
+          </div>
+        </div>
+        <div class="media-right">
+          <!-- Mark as solution -->
+          <button
+            v-if="comment.solution === 'N' && isOwnerOfThePost"
+            class="button is-success is-light is-rounded"
+            @click="markSolution"
+          >
+            <template v-if="!markSolutionLoading">
               <div>
-                <!-- Username -->
-                <strong class="mr-1">{{ comment.author.username }}</strong>
-                <!-- Posted Time -->
-                <small class="has-text-grey-dark">{{ postedTime }}</small>
+                <i class="fas fa-check"></i>
               </div>
+            </template>
 
-              <!-- Right -->
+            <template v-else>
               <div>
-                <!-- Mark as solution -->
-                <button
-                  v-if="comment.solution === 'N' && isOwnerOfThePost"
-                  class="button is-success is-light is-rounded"
-                  @click="markSolution"
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+            </template>
+            <span class="ml-2">Mark as solution</span>
+          </button>
+
+          <!-- Solution -->
+          <button
+            v-else-if="comment.solution === 'Y'"
+            class="button is-success is-rounded"
+          >
+            <i class="fas fa-check"></i>
+            <span class="ml-2">Solution</span>
+          </button>
+
+          <!-- Menus -->
+          <div class="dropdown is-right" :class="{ 'is-active': openMenu }">
+            <div class="dropdown-trigger ml-3">
+              <span
+                class="pointer"
+                style="font-size: 2rem;line-height: 0;"
+                @click="openMenu = !openMenu"
+                >...</span
+              >
+            </div>
+
+            <div class="dropdown-menu">
+              <div class="dropdown-content py-0">
+                <!-- Edit -->
+                <div
+                  class="dropdown-item pointer"
+                  @click="$emit('edit', comment), (openMenu = false)"
                 >
-                  <template v-if="!markSolutionLoading">
-                    <div>
-                      <i class="fas fa-check"></i>
-                    </div>
+                  <i class="fas fa-pencil-alt"></i>
+                  <span class="ml-2">Edit</span>
+                </div>
+
+                <!-- Delete -->
+                <div
+                  class="dropdown-item"
+                  :class="{ pointer: !deleteLoading }"
+                  @click="deleteComment"
+                >
+                  <template v-if="!deleteLoading">
+                    <span>
+                      <i class="fas fa-trash"></i>
+                    </span>
                   </template>
 
                   <template v-else>
-                    <div>
+                    <span>
                       <i class="fas fa-spinner fa-spin"></i>
-                    </div>
+                    </span>
                   </template>
-                  <span class="ml-2">Mark as solution</span>
-                </button>
 
-                <!-- Solution -->
-                <button
-                  v-else-if="comment.solution === 'Y'"
-                  class="button is-success is-rounded"
-                >
-                  <i class="fas fa-check"></i>
-                  <span class="ml-2">Solution</span>
-                </button>
-
-                <!-- Edit Button -->
-                <button
-                  class="button is-light ml-2"
-                  v-if="isOwnerOfTheComment"
-                  @click="$emit('edit', comment)"
-                >
-                  <i class="fas fa-pencil-alt"></i>
-                </button>
+                  <span class="ml-2">Delete</span>
+                </div>
               </div>
             </div>
-            <!-- Comment Body -->
-            <p class="mb-0 mt-1" v-html="cleanedBody"></p>
           </div>
         </div>
       </article>
@@ -89,7 +117,9 @@ export default {
 
   data() {
     return {
-      markSolutionLoading: false
+      markSolutionLoading: false,
+      openMenu: false,
+      deleteLoading: false
     }
   },
 
@@ -125,6 +155,22 @@ export default {
       } finally {
         this.markSolutionLoading = false
       }
+    },
+    async deleteComment() {
+      this.openMenu = false
+      if (this.deleteLoading) return
+      const ask = confirm('Are you sure want to delete this comment ?')
+      if (!ask) return
+
+      try {
+        await commentApi.delete(this.comment.id)
+
+        this.$emit('deleted', this.comment)
+      } catch (err) {
+        alert('Failed to delete comment, please try again later.')
+      } finally {
+        this.deleteLoading = false
+      }
     }
   }
 }
@@ -149,6 +195,10 @@ export default {
     .button {
       font-size: 0.75rem;
     }
+  }
+
+  .dropdown-item:hover {
+    background-color: #f3f3f3;
   }
 }
 </style>

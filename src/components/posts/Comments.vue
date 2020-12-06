@@ -73,6 +73,7 @@
         :comment="comment"
         class="mb-3"
         @edit="openEditCommentDialog"
+        @deleted="commentDeletedHandler"
         @mark-solution="markSolutionHandler"
       ></comment-card>
 
@@ -175,6 +176,9 @@ export default {
     },
     commentUpdatedHandler() {
       this.comments = null
+      this.getComments()
+    },
+    commentDeletedHandler() {
       this.getComments()
     },
     markSolutionHandler(comment) {
