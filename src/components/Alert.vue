@@ -1,7 +1,27 @@
 <template>
   <div class="my-0 notification is-light" :class="[`is-${type}`]">
-    <i :class="finalIcon" class="mr-1"></i>
-    {{ message }}
+    <!-- Icon -->
+    <template v-if="type === 'success'">
+      <span>
+        <i class="fas fa-check-circle"></i>
+      </span>
+    </template>
+    <template v-if="type === 'danger'">
+      <span>
+        <i class="fas fa-times-circle"></i>
+      </span>
+    </template>
+    <template v-if="type === 'warning'">
+      <span>
+        <i class="fas fa-exclamation-circle"></i>
+      </span>
+    </template>
+
+    <!-- Message -->
+    <span class="ml-2">{{ message }}</span>
+
+    <!-- Slot -->
+    <slot></slot>
   </div>
 </template>
 
@@ -19,26 +39,6 @@ export default {
     icon: {
       type: String,
       default: null
-    }
-  },
-
-  computed: {
-    finalIcon() {
-      let icon = null
-
-      if (this.icon === null) {
-        if (this.type == 'success') {
-          icon = 'check-circle'
-        } else if (this.type == 'danger') {
-          icon = 'times-circle'
-        } else if (this.type == 'warning') {
-          icon = 'exclamation-circle'
-        }
-      } else {
-        icon = this.icon
-      }
-
-      return `fas fa-${icon}`
     }
   }
 }
