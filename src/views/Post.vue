@@ -35,6 +35,7 @@
           :post="post"
           @delete="deletePost"
           @solved="postSolvedHandler"
+          @open-profile="openProfileDialog = true"
         ></post-detail>
 
         <!-- Comments -->
@@ -42,12 +43,22 @@
       </div>
       <div class="column is-3">
         <!-- The Meta -->
-        <post-meta :post="post"></post-meta>
+        <post-meta
+          :post="post"
+          @open-profile="openProfileDialog = true"
+        ></post-meta>
 
         <!-- Related Posts -->
         <related-post class="mt-4" :post="post"></related-post>
       </div>
     </div>
+
+    <!-- Profile Dialog -->
+    <profile-dialog
+      v-if="openProfileDialog"
+      :user="post.author"
+      @close="openProfileDialog = false"
+    ></profile-dialog>
   </div>
 </template>
 
@@ -57,20 +68,23 @@ import Comments from '@/components/posts/Comments'
 import Detail from '@/components/posts/Detail'
 import Meta from '@/components/posts/Meta'
 import Related from '@/components/posts/Related'
+import ProfileDialog from '@/components/profile/ProfileDialog'
 
 export default {
   components: {
     Comments,
     'post-detail': Detail,
     'post-meta': Meta,
-    'related-post': Related
+    'related-post': Related,
+    ProfileDialog
   },
 
   data() {
     return {
       post: null,
       loading: false,
-      deleteLoading: false
+      deleteLoading: false,
+      openProfileDialog: false
     }
   },
 

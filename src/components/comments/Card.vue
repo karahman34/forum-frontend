@@ -10,7 +10,11 @@
           <div class="content">
             <!-- Header -->
             <!-- Username -->
-            <strong class="mr-1">{{ comment.author.username }}</strong>
+            <strong
+              class="mr-1 is-clickable"
+              @click="$emit('open-profile', comment.author)"
+              >{{ comment.author.username }}</strong
+            >
             <!-- Posted Time -->
             <small class="has-text-grey-dark">{{ postedTime }}</small>
             <!-- Comment Body -->

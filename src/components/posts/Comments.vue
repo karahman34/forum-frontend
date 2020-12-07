@@ -72,6 +72,7 @@
         :post="post"
         :comment="comment"
         class="mb-3"
+        @open-profile=";(openProfileDialog = true), (focusProfile = $event)"
         @edit="openEditCommentDialog"
         @deleted="commentDeletedHandler"
         @mark-solution="markSolutionHandler"
@@ -96,6 +97,13 @@
       @close="openFormDialog = false"
       @updated="commentUpdatedHandler"
     ></edit-comment>
+
+    <!-- Profile Dialog -->
+    <profile-dialog
+      v-if="openProfileDialog"
+      :user="focusProfile"
+      @close=";(openProfileDialog = false), (focusProfile = false)"
+    ></profile-dialog>
   </div>
 </template>
 
@@ -105,6 +113,7 @@ import Card from '@/components/comments/Card'
 import Form from '@/components/comments/FormDialog'
 import Pagination from '@/components/Pagination'
 import { mapState } from 'vuex'
+import ProfileDialog from '@/components/profile/ProfileDialog'
 
 export default {
   props: {
@@ -118,6 +127,7 @@ export default {
     'comment-card': Card,
     'create-comment': Form,
     'edit-comment': Form,
+    ProfileDialog,
     Pagination
   },
 
@@ -130,7 +140,9 @@ export default {
       sortOptions: ['old', 'new'],
       total: null,
       openFormDialog: false,
-      focusComment: null
+      focusComment: null,
+      openProfileDialog: false,
+      focusProfile: null
     }
   },
 

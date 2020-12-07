@@ -10,7 +10,11 @@
       <!-- Author -->
       <div>
         <span>Author: </span>
-        <span class="has-text-grey">{{ post.author.username }}</span>
+        <span
+          class="has-text-grey is-clickable"
+          @click="$emit('open-profile')"
+          >{{ post.author.username }}</span
+        >
       </div>
 
       <!-- Views -->

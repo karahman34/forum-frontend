@@ -16,7 +16,7 @@
               <!-- Meta -->
               <small class="has-text-grey is-block mt-1">
                 <!-- Author -->
-                <span class="mr-2">
+                <span class="mr-2 is-clickable" @click="$emit('open-profile')">
                   <i class="fas fa-user"></i>
                   {{ post.author.username }}
                 </span>
