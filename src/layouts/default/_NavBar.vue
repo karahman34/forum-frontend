@@ -175,8 +175,8 @@ export default {
 .avatar {
   object-fit: cover;
   border-radius: 50%;
-  width: 33px;
-  height: 33px;
+  width: 30px;
+  height: 35px;
 }
 
 .dropdown {
