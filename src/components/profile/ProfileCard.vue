@@ -3,6 +3,13 @@
     <!-- Unverified Email Alert -->
     <verify-email :verified="verified"></verify-email>
 
+    <!-- Profile Dialog -->
+    <profile-dialog
+      v-if="openProfileDialog"
+      :user="auth"
+      @close="openProfileDialog = false"
+    ></profile-dialog>
+
     <!-- Main Content -->
     <div class="card profile-card">
       <div class="card-content">
@@ -20,6 +27,7 @@
           <button
             class="button is-info is-rounded has-text-weight-medium"
             style="font-size: 0.85rem;"
+            @click="openProfileDialog = true"
           >
             <i class="fas fa-eye"></i>
             <span class="ml-2">My Posts</span>
@@ -158,11 +166,13 @@ import { hideValidationErrors, showValidationErrors } from '@/helpers/form'
 import profileApi from '@/api/profileApi'
 import Alert from '@/components/Alert'
 import VerifyEmail from './VerifyEmail.vue'
+import ProfileDialog from '@/components/profile/ProfileDialog'
 
 export default {
   components: {
     Alert,
-    VerifyEmail
+    VerifyEmail,
+    ProfileDialog
   },
 
   props: {
@@ -192,7 +202,8 @@ export default {
       alert: {
         type: null,
         message: null
-      }
+      },
+      openProfileDialog: false
     }
   },
 
