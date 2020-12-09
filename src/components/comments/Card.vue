@@ -52,7 +52,11 @@
           </button>
 
           <!-- Menus -->
-          <div class="dropdown is-right" :class="{ 'is-active': openMenu }">
+          <div
+            v-if="isOwnerOfTheComment"
+            class="dropdown is-right"
+            :class="{ 'is-active': openMenu }"
+          >
             <div class="dropdown-trigger ml-3">
               <span
                 class="pointer"
