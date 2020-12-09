@@ -13,6 +13,8 @@ export default {
     return http.get(`${prefix}/${username}`)
   },
   getPosts(username, params = null) {
-    return http.get(`${prefix}/${username}/posts`, params)
+    return http.get(`${prefix}/${username}/posts`, {
+      params
+    })
   }
 }

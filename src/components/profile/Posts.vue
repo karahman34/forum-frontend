@@ -10,27 +10,20 @@
       ></post-feed>
     </template>
 
-    <!-- Loading -->
-    <template v-if="getPostsLoading">
-      <center>
-        <span
-          class="subtitle my-3 has-text-centered has-text-grey is-inline-block"
-        >
-          <i class="fas fa-spinner fa-spin"></i>
-          <span class="ml-2">Getting posts...</span>
-        </span>
-      </center>
-    </template>
+    <!-- Infinite Loading -->
+    <vue-infinite-loading @infinite="getPosts"></vue-infinite-loading>
   </div>
 </template>
 
 <script>
 import profileApi from '@/api/profileApi'
 import Feed from '@/components/posts/Feed'
+import VueInfiniteLoading from 'vue-infinite-loading'
 
 export default {
   components: {
-    'post-feed': Feed
+    'post-feed': Feed,
+    VueInfiniteLoading
   },
 
   props: {
@@ -42,28 +35,29 @@ export default {
 
   data() {
     return {
-      posts: null,
-      getPostsLoading: false
+      page: 1,
+      posts: []
     }
   },
 
-  mounted() {
-    this.getPosts()
-  },
-
   methods: {
-    async getPosts() {
-      this.getPostsLoading = true
-
+    async getPosts($state) {
       try {
-        const res = await profileApi.getPosts(this.user.username)
-        const { data } = res.data
+        const res = await profileApi.getPosts(this.user.username, {
+          page: this.page
+        })
+        const { data, links } = res.data
 
-        this.posts = data
+        this.posts.push(...data)
+
+        if (links.next) {
+          this.page += 1
+          $state.loaded()
+        } else {
+          $state.complete()
+        }
       } catch (err) {
         alert('Failed to get user posts.')
-      } finally {
-        this.getPostsLoading = false
       }
     }
   }
