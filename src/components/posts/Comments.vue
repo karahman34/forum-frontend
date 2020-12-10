@@ -57,7 +57,9 @@
 
     <!-- Zero Comment -->
     <div
-      v-else-if="!loading && comments !== null && !comments.length"
+      v-else-if="
+        !loading && comments[page] !== undefined && !comments[page].length
+      "
       class="has-text-centered subtitle mt-4"
     >
       This post has no comments yet.
@@ -67,7 +69,7 @@
     <template v-else>
       <!-- List Comments -->
       <comment-card
-        v-for="comment in comments"
+        v-for="comment in comments[page]"
         :key="comment.id"
         :post="post"
         :comment="comment"
@@ -79,7 +81,11 @@
       ></comment-card>
 
       <!-- Pagination -->
-      <pagination v-if="total > 10" :total="total"></pagination>
+      <pagination
+        v-if="total && hidePagination"
+        :total="total"
+        v-model="page"
+      ></pagination>
     </template>
 
     <!-- Create Dialog -->
@@ -133,9 +139,10 @@ export default {
 
   data() {
     return {
-      comments: null,
-      loading: false,
       page: 1,
+      hidePagination: false,
+      comments: {},
+      loading: false,
       sort: 'old',
       sortOptions: ['old', 'new'],
       total: null,
@@ -154,8 +161,18 @@ export default {
 
   watch: {
     sort() {
-      this.comments = null
-      this.getComments()
+      const currentPage = this.page
+      this.page = 1
+      this.comments = {}
+
+      if (currentPage === 1) {
+        this.getComments()
+      }
+    },
+    page(page) {
+      if (!this.comments[page]) {
+        this.getComments()
+      }
     }
   },
 
@@ -183,26 +200,28 @@ export default {
     commentCreatedHandler() {
       this.page = 1
       this.sort = 'new'
-      this.comments = null
+      this.comments = {}
       this.getComments()
     },
     commentUpdatedHandler() {
-      this.comments = null
+      this.comments = {}
       this.getComments()
     },
     commentDeletedHandler() {
       this.getComments()
     },
     markSolutionHandler(comment) {
-      const focusCommentIndex = this.comments.findIndex(
+      const focusCommentIndex = this.comments[this.page].findIndex(
         _comment => _comment.id === comment.id
       )
 
-      for (const comment of this.comments) {
-        comment.solution = 'N'
+      for (const page in this.comments) {
+        for (const comment of this.comments[page]) {
+          comment.solution = 'N'
+        }
       }
 
-      this.$set(this.comments[focusCommentIndex], 'solution', 'Y')
+      this.$set(this.comments[this.page][focusCommentIndex], 'solution', 'Y')
     },
     async getComments() {
       this.loading = true
@@ -212,10 +231,11 @@ export default {
           sort: this.sort,
           page: this.page
         })
-        const { data, meta } = res.data
+        const { data, meta, links } = res.data
 
-        this.comments = data
+        this.$set(this.comments, this.page, data)
         this.total = meta.total
+        this.hidePagination = !links.next && !links.prev ? true : false
       } catch (err) {
         alert('Failed to get comments data, please try again later.')
       } finally {

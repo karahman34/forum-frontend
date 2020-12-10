@@ -54,6 +54,10 @@ export default {
     perPage: {
       type: Number,
       default: 10
+    },
+    value: {
+      type: Number,
+      required: true
     }
   },
 
@@ -62,6 +66,10 @@ export default {
       activePage: 1,
       views: 4
     }
+  },
+
+  mounted() {
+    this.activePage = this.value
   },
 
   computed: {
@@ -83,11 +91,13 @@ export default {
     nextPages() {
       const pages = []
 
-      for (let n = 1; n <= this.views; n++) {
-        const page = this.activePage + n
-
-        if (page <= this.lastPage) {
-          pages.push(page)
+      for (
+        let n = this.activePage + 1;
+        n <= this.activePage + this.views;
+        n++
+      ) {
+        if (n <= this.lastPage) {
+          pages.push(n)
         }
       }
 

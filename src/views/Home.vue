@@ -34,18 +34,20 @@
     <!-- No result -->
     <div
       class="mt-6 title has-text-centered has-text-weight-medium has-text-grey-dark"
-      v-else-if="!getPostsLoading && posts !== null && !posts.length"
+      v-else-if="
+        !getPostsLoading && posts[page] !== undefined && !posts[page].length
+      "
     >
       <span class="ml-3">No result, please try with another keywords.</span>
     </div>
 
     <!-- Posts Lists -->
-    <post v-else v-for="post in posts" :key="post.id" :post="post"></post>
+    <post v-else v-for="post in posts[page]" :key="post.id" :post="post"></post>
 
     <!-- Pagination -->
     <pagination
       v-model="page"
-      v-if="!getPostsLoading && posts !== null && posts.length"
+      v-if="!getPostsLoading && !hidePagination && total"
       class="mt-5"
       :total="total"
     ></pagination>
@@ -74,10 +76,11 @@ export default {
         tags: null,
         filter: null
       },
-      posts: null,
+      posts: {},
       page: 1,
       total: null,
-      getPostsLoading: false
+      getPostsLoading: false,
+      hidePagination: null
     }
   },
 
@@ -85,16 +88,24 @@ export default {
     filter: {
       deep: true,
       handler() {
-        this.posts = null
-        this.getPosts()
+        const currentPage = this.page
+        this.page = 1
+        this.posts = {}
+
+        if (currentPage === 1) {
+          this.getPosts()
+        }
+      }
+    },
+    page(page) {
+      if (!this.posts[page]) {
+        return this.getPosts()
       }
     }
   },
 
   mounted() {
-    if (!this.posts) {
-      this.getPosts()
-    }
+    this.getPosts()
   },
 
   methods: {
@@ -106,12 +117,13 @@ export default {
           page: this.page,
           ...this.filter
         })
-        const { ok, data, meta } = res.data
+        const { ok, data, meta, links } = res.data
 
         if (!ok) throw new Error('failed')
 
-        this.posts = data
+        this.$set(this.posts, this.page, data)
         this.total = meta.total
+        this.hidePagination = !links.next && !links.prev ? true : false
       } catch (err) {
         alert('Failed to get posts data, please try again later.')
       } finally {
