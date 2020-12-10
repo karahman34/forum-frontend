@@ -25,5 +25,6 @@ export default {
 <style lang="scss" scoped>
 section.section {
   background-color: #f3f3f3;
+  padding-top: 85px;
 }
 </style>
