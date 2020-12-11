@@ -39,7 +39,23 @@
         ></post-detail>
 
         <!-- Comments -->
-        <comments class="mt-4" :post="post"></comments>
+        <comments
+          class="mt-4"
+          :class="{ 'is-hidden': hideComments }"
+          :post="post"
+        ></comments>
+
+        <!-- Show Comment -->
+        <button
+          class="button mt-5 is-info is-fullwidth"
+          v-if="hideComments"
+          @click="hideComments = false"
+        >
+          <span class="icon">
+            <i class="fas fa-eye"></i>
+          </span>
+          <span>Show Comments</span>
+        </button>
       </div>
       <div class="column is-3">
         <!-- The Meta -->
@@ -84,7 +100,8 @@ export default {
       post: null,
       loading: false,
       deleteLoading: false,
-      openProfileDialog: false
+      openProfileDialog: false,
+      hideComments: false
     }
   },
 
@@ -100,6 +117,14 @@ export default {
       handler() {
         this.getPost()
       }
+    }
+  },
+
+  mounted() {
+    const width = window.innerWidth
+
+    if (width < 769) {
+      this.hideComments = true
     }
   },
 

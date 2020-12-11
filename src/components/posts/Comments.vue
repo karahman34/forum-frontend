@@ -82,7 +82,7 @@
 
       <!-- Pagination -->
       <pagination
-        v-if="total && hidePagination"
+        v-if="total && !hidePagination"
         :total="total"
         v-model="page"
       ></pagination>
@@ -235,7 +235,8 @@ export default {
 
         this.$set(this.comments, this.page, data)
         this.total = meta.total
-        this.hidePagination = !links.next && !links.prev ? true : false
+        this.hidePagination =
+          links.next === null && links.prev === null ? true : false
       } catch (err) {
         alert('Failed to get comments data, please try again later.')
       } finally {
