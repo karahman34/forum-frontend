@@ -18,6 +18,7 @@ import '@fortawesome/fontawesome-free/js/all.js'
 import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.config.productionTip = false
+require('./plugins/echo')
 
 // Use Http Plugins
 Vue.use(httpPlugin)
