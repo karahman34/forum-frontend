@@ -112,6 +112,10 @@ export default {
         .then(() => (this.new_notifications = 0))
         .catch(() => {})
     }
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('click', () => {})
   }
 }
 </script>
