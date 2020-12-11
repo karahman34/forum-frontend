@@ -7,6 +7,7 @@
     <div class="container">
       <!-- Brand -->
       <div class="navbar-brand">
+        <!-- Logo -->
         <router-link class="navbar-item" :to="{ name: 'Home' }">
           <img
             src="https://bulma.io/images/bulma-logo.png"
@@ -15,18 +16,29 @@
           />
         </router-link>
 
-        <a
-          role="button"
-          class="navbar-burger burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarDefaultLayout"
-          @click="showNavbarMenu = !showNavbarMenu"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
+        <div class="navbar-mobile-right">
+          <!-- Bell Icon -->
+          <div
+            class="notification-trigger-mobile is-hidden-desktop"
+            @click="$emit('click-notifications')"
+          >
+            <i class="far fa-bell"></i>
+          </div>
+
+          <!-- Burger -->
+          <div
+            role="button"
+            class="navbar-burger burger mx-0"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarDefaultLayout"
+            @click="showNavbarMenu = !showNavbarMenu"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </div>
+        </div>
       </div>
 
       <div
@@ -63,8 +75,14 @@
             </div>
 
             <!-- Notifications -->
-            <div class="navbar-item">
-              <a href="#" class="text">Notifications</a>
+            <div
+              class="navbar-item notification-trigger-desktop is-clickable is-hidden-touch"
+              @click="$emit('click-notifications')"
+            >
+              <span class="text">Notifications</span>
+              <small v-if="newNotifications > 0" class="notifications-count">{{
+                newNotifications
+              }}</small>
             </div>
 
             <!-- User Dropdown -->
@@ -123,6 +141,13 @@
 import { mapActions, mapState } from 'vuex'
 
 export default {
+  props: {
+    newNotifications: {
+      type: Number,
+      required: true
+    }
+  },
+
   data() {
     return {
       showNavbarMenu: false,
@@ -228,6 +253,42 @@ export default {
           background-color: rgb(0, 209, 178);
         }
       }
+    }
+  }
+}
+
+.notification-trigger-desktop {
+  position: relative;
+
+  .notifications-count {
+    position: absolute;
+    top: 8px;
+    right: -2px;
+    color: white;
+    background-color: hsl(171, 100%, 41%);
+    border-radius: 50%;
+    padding: 0px 6px;
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
+.navbar-mobile-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+
+  .notification-trigger-mobile {
+    cursor: pointer;
+    width: 3rem;
+    height: 3.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: #f3f3f3 !important;
     }
   }
 }
