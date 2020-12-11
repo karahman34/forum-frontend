@@ -174,9 +174,11 @@ export default {
         // Dispatch action
         await this.logoutAction()
 
-        this.$router.replace({
+        const routerData = this.$router.resolve({
           name: 'Login'
         })
+
+        window.location.href = routerData.href
       } catch (err) {
         alert('Failed to logout user, please try again later.')
       } finally {

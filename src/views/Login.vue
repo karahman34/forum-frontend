@@ -154,7 +154,8 @@ export default {
 
         const redirectUrl = this.$route.query.from || { name: 'Home' }
 
-        this.$router.replace(redirectUrl)
+        const routerData = this.$router.resolve(redirectUrl)
+        window.location.href = routerData.href
       } catch (err) {
         const errCode = err?.response?.status
 

@@ -201,7 +201,7 @@ export default {
   },
 
   beforeDestroy() {
-    window.Echo.private(`notifications.${this.authId}`).leave()
+    window.Echo.leave(`notifications.${this.authId}`)
   }
 }
 </script>

@@ -12,13 +12,13 @@ import httpPlugin, {
   applyToken,
   removeToken
 } from './plugins/httpPlugin'
+import Echo from './plugins/echo'
 
 // Use Fontawesome
 import '@fortawesome/fontawesome-free/js/all.js'
 import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.config.productionTip = false
-require('./plugins/echo')
 
 // Use Http Plugins
 Vue.use(httpPlugin)
@@ -30,6 +30,11 @@ const runApp = () => {
 
   // Add title & checking middleware
   router.beforeEach(routerGuard)
+
+  // Initialize laravel echo
+  if (store.state.auth.loggedIn) {
+    window.Echo = Echo
+  }
 
   // Make vue
   new Vue({

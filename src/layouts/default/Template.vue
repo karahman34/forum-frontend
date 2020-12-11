@@ -60,51 +60,56 @@ export default {
   },
 
   mounted() {
-    this.clickOutsideEvent()
+    if (this.loggedIn) {
+      this.windowClickEvent()
+    }
   },
 
   methods: {
-    clickOutsideEvent() {
-      // Click Event
-      window.addEventListener('click', e => {
-        const triggerDesktop = document.querySelector(
-          '.notification-trigger-desktop'
-        )
-        const triggerMobile = document.querySelector(
-          '.notification-trigger-mobile'
-        )
-        const notificationsComponent = document.querySelector(
-          '#notifications-component'
-        )
+    windowClickEvent() {
+      window.addEventListener('click', this.clickOutsideHandler)
+    },
+    removeWindowClickEvent() {
+      window.removeEventListener('click', this.clickOutsideHandler)
+    },
+    clickOutsideHandler(e) {
+      const triggerDesktop = document.querySelector(
+        '.notification-trigger-desktop'
+      )
+      const triggerMobile = document.querySelector(
+        '.notification-trigger-mobile'
+      )
+      const notificationsComponent = document.querySelector(
+        '#notifications-component'
+      )
 
-        // Merge child nodes.
-        const childNodes = [
-          ...triggerMobile.querySelectorAll('*'),
-          ...triggerDesktop.querySelectorAll('*'),
-          ...notificationsComponent.querySelectorAll('*')
-        ]
+      // Merge child nodes.
+      const childNodes = [
+        ...triggerMobile.querySelectorAll('*'),
+        ...triggerDesktop.querySelectorAll('*'),
+        ...notificationsComponent.querySelectorAll('*')
+      ]
 
-        // Target
-        const target = e.target
+      // Target
+      const target = e.target
 
-        if (
-          this.notificationDialog &&
-          triggerMobile.isSameNode(target) === false &&
-          triggerDesktop.isSameNode(target) === false &&
-          notificationsComponent.isSameNode(target) === false
-        ) {
-          // Check from child nodes
-          for (let i = 0; i < childNodes.length; i++) {
-            const childNode = childNodes[i]
+      if (
+        this.notificationDialog &&
+        triggerMobile.isSameNode(target) === false &&
+        triggerDesktop.isSameNode(target) === false &&
+        notificationsComponent.isSameNode(target) === false
+      ) {
+        // Check from child nodes
+        for (let i = 0; i < childNodes.length; i++) {
+          const childNode = childNodes[i]
 
-            if (childNode.isSameNode(target)) {
-              return
-            }
+          if (childNode.isSameNode(target)) {
+            return
           }
-
-          this.notificationDialog = false
         }
-      })
+
+        this.notificationDialog = false
+      }
     },
     resetNotificationsCount() {
       return notificationApi
@@ -115,7 +120,7 @@ export default {
   },
 
   beforeDestroy() {
-    window.removeEventListener('click', () => {})
+    this.removeWindowClickEvent()
   }
 }
 </script>
