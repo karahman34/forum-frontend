@@ -1,5 +1,5 @@
 <template>
-  <div class="my-0 notification is-light" :class="[`is-${type}`]">
+  <div class="my-0 notification" :class="[`is-${type}`, { 'is-light': light }]">
     <!-- Icon -->
     <template v-if="type === 'success'">
       <span>
@@ -39,6 +39,10 @@ export default {
     icon: {
       type: String,
       default: null
+    },
+    light: {
+      type: Boolean,
+      default: true
     }
   }
 }
