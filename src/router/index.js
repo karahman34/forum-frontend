@@ -31,6 +31,16 @@ const routes = [
     component: () => import('@/views/Register')
   },
   {
+    path: '/reset-password',
+    name: 'Reset_Password',
+    meta: {
+      title: 'Reset Password',
+      layout: 'auth',
+      guest: true
+    },
+    component: () => import('@/views/ResetPassword')
+  },
+  {
     path: '/profile',
     name: 'Profile',
     meta: {

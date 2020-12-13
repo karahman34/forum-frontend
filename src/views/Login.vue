@@ -84,7 +84,9 @@
                   <!-- Forgot Passowrd -->
                   <div class="column is-half">
                     <div class="is-flex is-justify-content-flex-end">
-                      <a href="#" class="mt-1">Forgot Password ?</a>
+                      <router-link class="mt-1" :to="{ name: 'Reset_Password' }"
+                        >Forgot Password ?</router-link
+                      >
                     </div>
                   </div>
                 </div>
