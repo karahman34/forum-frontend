@@ -18,6 +18,7 @@
         <div class="navbar-mobile-right">
           <!-- Bell Icon -->
           <div
+            v-if="loggedIn"
             class="notification-trigger-mobile is-hidden-desktop"
             @click="$emit('click-notifications')"
           >
