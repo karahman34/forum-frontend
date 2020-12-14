@@ -8,12 +8,11 @@
       <!-- Brand -->
       <div class="navbar-brand">
         <!-- Logo -->
-        <router-link class="navbar-item" :to="{ name: 'Home' }">
-          <img
-            src="https://bulma.io/images/bulma-logo.png"
-            width="112"
-            height="28"
-          />
+        <router-link
+          class="navbar-item has-text-grey-dark"
+          :to="{ name: 'Home' }"
+        >
+          <span id="logo-text">{{ appName }}</span>
         </router-link>
 
         <div class="navbar-mobile-right">
@@ -160,7 +159,10 @@ export default {
     ...mapState('auth', {
       loggedIn: state => state.loggedIn,
       user: state => state.user
-    })
+    }),
+    appName() {
+      return process.env.VUE_APP_NAME
+    }
   },
 
   methods: {
@@ -236,6 +238,16 @@ export default {
 }
 
 .navbar {
+  #logo-text {
+    font-size: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+  }
+
   .navbar-item {
     .text {
       color: rgb(74, 74, 74);
