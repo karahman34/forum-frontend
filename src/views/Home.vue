@@ -22,7 +22,7 @@
     <filter-posts class="mt-1 mb-3" @filter="filter = $event"></filter-posts>
 
     <!-- Loading get posts -->
-    <template v-if="getPostsLoading && posts === null">
+    <template v-if="getPostsLoading">
       <div
         class="mt-6 title has-text-centered has-text-weight-medium has-text-grey-dark"
       >
