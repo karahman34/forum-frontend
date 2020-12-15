@@ -28,6 +28,8 @@ export default {
         message = 'Unauthorized.'
       } else if (this.errCode === 403) {
         message = 'Forbidden.'
+      } else if (this.errCode === 404) {
+        message = 'Page Not Found.'
       } else if (this.errCode === 500) {
         message = 'Internal Server Error'
       }

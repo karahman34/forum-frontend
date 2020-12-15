@@ -74,6 +74,10 @@ const routes = [
     path: '/errors/:code',
     name: 'Page.Error',
     component: () => import('@/views/PageError')
+  },
+  {
+    path: '*',
+    component: () => import('@/views/NotFound')
   }
 ]
 
