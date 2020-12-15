@@ -68,6 +68,25 @@
             <div class="field">
               <label for="screenshots" class="label">Screenshots</label>
               <div class="control">
+                <!-- Preview Screenshots -->
+                <div v-if="preview_screenshots.length" class="my-1">
+                  <div
+                    v-for="preview_screenshot in preview_screenshots"
+                    :key="preview_screenshot"
+                    class="my-2 preview-container"
+                  >
+                    <img :src="preview_screenshot" class="is-block image" />
+                    <button
+                      class="button is-light delete-button"
+                      @click="deleteImage(preview_screenshot)"
+                    >
+                      <i class="fas fa-times"></i>
+                      <span class="ml-2">Delete</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- File Input -->
                 <div class="file is-fullwidth">
                   <label class="file-label">
                     <input
@@ -93,24 +112,6 @@
               <p v-if="errors.screenshots" class="help is-danger">
                 {{ errors.screenshots }}
               </p>
-            </div>
-
-            <!-- Preview Screenshots -->
-            <div v-if="preview_screenshots.length" class="mt-2">
-              <div
-                v-for="preview_screenshot in preview_screenshots"
-                :key="preview_screenshot"
-                class="my-2 preview-container"
-              >
-                <img :src="preview_screenshot" class="is-block image" />
-                <button
-                  class="button is-light delete-button"
-                  @click="deleteImage(preview_screenshot)"
-                >
-                  <i class="fas fa-times"></i>
-                  <span class="ml-2">Delete</span>
-                </button>
-              </div>
             </div>
 
             <!-- Footer -->
@@ -353,10 +354,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.file .file-cta {
+  background-color: white !important;
+}
+
 .preview-container {
   position: relative;
 
   .image {
+    width: 100%;
+    object-fit: cover;
+    max-height: 600px;
     transition: filter 0.5s;
   }
 
