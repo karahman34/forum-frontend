@@ -72,7 +72,7 @@ export default {
 
 <style lang="scss">
 .tag-input.custom {
-  max-width: none;
+  max-width: none !important;
   width: 100% !important;
 
   .ti-tag {

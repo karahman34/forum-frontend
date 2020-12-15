@@ -135,21 +135,37 @@ export default {
       return moment(time).fromNow()
     },
     goToPost(notification) {
-      return this.$router
-        .push({
-          name: 'Post',
-          params: {
-            id: notification.post.id,
-            slug: notification.post.title.replace(/ /g, '-')
-          }
-        })
-        .then(() => {
-          this.$emit('hide')
+      const { name, params } = this.$route
+      const slug = notification.post.title.replace(/ /g, '-')
 
-          if (!notification.read_at) {
-            this.markReaded(notification.id)
-          }
-        })
+      if (
+        name === 'Post' &&
+        params.id === notification.post.id &&
+        params.slug === slug
+      ) {
+        this.$emit('hide')
+
+        if (!notification.read_at) {
+          this.markReaded(notification.id)
+        }
+      } else {
+        return this.$router
+          .push({
+            name: 'Post',
+            params: {
+              id: notification.post.id,
+              slug
+            }
+          })
+          .then(() => {
+            this.$emit('hide')
+
+            if (!notification.read_at) {
+              this.markReaded(notification.id)
+            }
+          })
+          .catch(() => {})
+      }
     },
     markReaded(id) {
       notificationApi

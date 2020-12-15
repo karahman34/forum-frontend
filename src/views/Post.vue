@@ -142,6 +142,17 @@ export default {
 
         this.post = data
       } catch (err) {
+        const errCode = err?.response?.status
+
+        if (errCode === 422) {
+          return this.$router.replace({
+            name: 'Page.Error',
+            params: {
+              code: 404
+            }
+          })
+        }
+
         alert('Failed to get post data, please try again later')
       } finally {
         this.loading = false

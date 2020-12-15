@@ -136,7 +136,7 @@ export default {
       return moment(this.post.created_at).calendar()
     },
     isAuthor() {
-      return this.post.author.username === this.auth.username
+      return this.post.author.username === this.auth?.username
     }
   },
 

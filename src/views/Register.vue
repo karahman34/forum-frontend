@@ -193,9 +193,7 @@ export default {
         // Dispatch vuex action
         await this.registerAction(this.form)
 
-        this.$router.replace({
-          name: 'Home'
-        })
+        window.location.href = '/'
       } catch (err) {
         const errCode = err?.response?.status
 

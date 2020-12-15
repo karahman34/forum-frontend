@@ -139,10 +139,10 @@ export default {
       return moment(this.comment.created_at).fromNow()
     },
     isOwnerOfTheComment() {
-      return this.comment.author.username === this.auth.username
+      return this.comment.author.username === this.auth?.username
     },
     isOwnerOfThePost() {
-      return this.post.author.username === this.auth.username
+      return this.post.author.username === this.auth?.username
     },
     cleanedBody() {
       // return this.comment.body
