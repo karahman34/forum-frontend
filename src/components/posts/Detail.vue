@@ -1,104 +1,118 @@
 <template>
-  <div class="card post">
-    <div class="card-content">
-      <article class="media mb-0">
-        <figure class="media-left">
-          <img :src="post.author.avatar" class="avatar" />
-        </figure>
-        <div class="media-content">
-          <div class="content">
-            <div>
-              <!-- Title -->
-              <strong class="subtitle has-text-weight-medium">{{
-                post.title
-              }}</strong>
+  <div class="post">
+    <article class="media mb-0" style="overflow: visible !important">
+      <!-- Figure -->
+      <figure class="media-left">
+        <img :src="post.author.avatar" class="avatar" />
+      </figure>
+      <!-- Media Content -->
+      <div class="media-content" style="overflow: visible !important">
+        <div class="content">
+          <div
+            class="is-flex is-justify-content-space-between is-align-items-flex-start"
+          >
+            <!-- Title -->
+            <strong class="subtitle has-text-weight-medium mb-0">{{
+              post.title
+            }}</strong>
 
-              <!-- Meta -->
-              <small class="has-text-grey is-block mt-1">
-                <!-- Author -->
-                <span class="mr-2 is-clickable" @click="$emit('open-profile')">
-                  <i class="fas fa-user"></i>
-                  {{ post.author.username }}
-                </span>
-
-                <!-- Posted Time -->
-                <span>
-                  <i class="fas fa-calendar-alt"></i>
-                  {{ postedTime }}
-                </span>
-
-                <!-- Views -->
-                <span class="mx-2">
-                  <i class="fas fa-eye"></i>
-                  <span> {{ post.views }} views</span>
-                </span>
-
-                <!-- Comments -->
-                <span>
-                  <i class="fas fa-comments"></i>
-                  <span> {{ post.comments_count }} comments</span>
-                </span>
-              </small>
-
-              <!-- The Content -->
-              <post-content class="is-hidden-touch" :post="post"></post-content>
-            </div>
-          </div>
-        </div>
-        <div class="media-right" v-if="isAuthor">
-          <div class="dropdown is-right" :class="{ 'is-active': openMenu }">
-            <div class="dropdown-trigger pointer" @click="openMenu = !openMenu">
-              <span style="font-size: 2rem;line-height: 0;">...</span>
-            </div>
-
-            <div class="dropdown-menu">
-              <div class="dropdown-content py-0">
-                <div
-                  v-if="post.solved === 'N'"
-                  class="dropdown-item"
-                  @click="markSolved"
+            <!-- Post Menus -->
+            <div
+              class="dropdown is-right post-menus-dropdown"
+              :class="{ 'is-active': openMenu }"
+            >
+              <!-- Trigger -->
+              <div
+                class="dropdown-trigger pointer"
+                style="font-size: 0"
+                @click="openMenu = !openMenu"
+              >
+                <span
+                  class="is-inline-block"
+                  style="font-size: 2rem;line-height:6px !important"
+                  >...</span
                 >
-                  <template v-if="!solveLoading">
-                    <span>
-                      <i class="fas fa-check"></i>
-                    </span>
-                  </template>
-                  <template v-else>
-                    <span>
-                      <i class="fas fa-spinner fa-spin"></i>
-                    </span>
-                  </template>
-                  <span class="ml-2">Solve</span>
-                </div>
+              </div>
 
-                <router-link
-                  class="dropdown-item"
-                  :to="{
-                    name: 'Post.Edit',
-                    params: {
-                      id: post.id
-                    }
-                  }"
-                >
-                  <i class="fas fa-pencil-alt"></i>
-                  <span class="ml-2">Edit</span>
-                </router-link>
+              <div class="dropdown-menu">
+                <div class="dropdown-content py-0">
+                  <div
+                    v-if="post.solved === 'N'"
+                    class="dropdown-item"
+                    @click="markSolved"
+                  >
+                    <template v-if="!solveLoading">
+                      <span>
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </template>
+                    <template v-else>
+                      <span>
+                        <i class="fas fa-spinner fa-spin"></i>
+                      </span>
+                    </template>
+                    <span class="ml-2">Solve</span>
+                  </div>
 
-                <div class="dropdown-item" @click="$emit('delete')">
-                  <i class="fas fa-trash"></i>
-                  <span class="ml-2">Delete</span>
+                  <router-link
+                    class="dropdown-item"
+                    :to="{
+                      name: 'Post.Edit',
+                      params: {
+                        id: post.id
+                      }
+                    }"
+                  >
+                    <i class="fas fa-pencil-alt"></i>
+                    <span class="ml-2">Edit</span>
+                  </router-link>
+
+                  <div class="dropdown-item" @click="$emit('delete')">
+                    <i class="fas fa-trash"></i>
+                    <span class="ml-2">Delete</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </article>
 
-      <!-- On Mobile -->
-      <div class="is-block-touch is-hidden-desktop">
-        <!-- The Content -->
-        <post-content :post="post"></post-content>
+          <!-- Meta -->
+          <small class="has-text-grey is-block mt-1">
+            <!-- Author -->
+            <span class="mr-2 is-clickable" @click="$emit('open-profile')">
+              <i class="fas fa-user"></i>
+              {{ post.author.username }}
+            </span>
+
+            <!-- Posted Time -->
+            <span>
+              <i class="fas fa-calendar-alt"></i>
+              {{ postedTime }}
+            </span>
+
+            <!-- Views -->
+            <span class="mx-2">
+              <i class="fas fa-eye"></i>
+              <span> {{ post.views }} views</span>
+            </span>
+
+            <!-- Comments -->
+            <span>
+              <i class="fas fa-comments"></i>
+              <span> {{ totalComments }} comments</span>
+            </span>
+          </small>
+
+          <!-- The Content -->
+          <post-content class="is-hidden-touch" :post="post"></post-content>
+        </div>
       </div>
+    </article>
+
+    <!-- On Mobile -->
+    <div class="is-block-touch is-hidden-desktop">
+      <!-- The Content -->
+      <post-content :post="post"></post-content>
     </div>
   </div>
 </template>
@@ -117,6 +131,10 @@ export default {
   props: {
     post: {
       type: Object,
+      required: true
+    },
+    totalComments: {
+      type: Number,
       required: true
     }
   },
@@ -142,9 +160,31 @@ export default {
 
   mounted() {
     this.increaseViews()
+
+    document.addEventListener('click', this.hidePostMenus)
   },
 
   methods: {
+    hidePostMenus(e) {
+      const postMenus = document.querySelector('.post-menus-dropdown')
+      const childNodes = postMenus.querySelectorAll('*')
+      const target = e.target
+
+      if (
+        this.openMenu === true &&
+        !target.isSameNode(postMenus.querySelector('.dropdown-trigger span'))
+      ) {
+        for (let i = 0; i < childNodes.length; i++) {
+          const childNode = childNodes[i]
+
+          if (childNode.isSameNode(target)) {
+            return
+          }
+        }
+
+        this.openMenu = false
+      }
+    },
     increaseViews() {
       postApi.increaseViews(this.post.id).catch(() => {})
     },
@@ -163,6 +203,10 @@ export default {
         this.solveLoading = false
       }
     }
+  },
+
+  beforeDestroy() {
+    document.removeEventListener('click', this.hidePostMenus)
   }
 }
 </script>

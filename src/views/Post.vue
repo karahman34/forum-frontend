@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Delete Post -->
+    <!-- Delete Post Loading -->
     <div
       v-if="deleteLoading"
       class="has-text-centered title has-text-grey has-text-weight-normal"
@@ -33,6 +33,7 @@
         <!-- Post Detail -->
         <post-detail
           :post="post"
+          :total-comments="total_comments"
           @delete="deletePost"
           @solved="postSolvedHandler"
           @open-profile="openProfileDialog = true"
@@ -43,6 +44,8 @@
           class="mt-4"
           :class="{ 'is-hidden': hideComments }"
           :post="post"
+          :total-comments="total_comments"
+          @total-comments="total_comments = $event"
         ></comments>
 
         <!-- Show Comment -->
@@ -58,12 +61,6 @@
         </button>
       </div>
       <div class="column is-3">
-        <!-- The Meta -->
-        <post-meta
-          :post="post"
-          @open-profile="openProfileDialog = true"
-        ></post-meta>
-
         <!-- Related Posts -->
         <related-post class="mt-4" :post="post"></related-post>
       </div>
@@ -82,7 +79,6 @@
 import postApi from '@/api/postApi'
 import Comments from '@/components/posts/Comments'
 import Detail from '@/components/posts/Detail'
-import Meta from '@/components/posts/Meta'
 import Related from '@/components/posts/Related'
 import ProfileDialog from '@/components/profile/ProfileDialog'
 
@@ -90,7 +86,6 @@ export default {
   components: {
     Comments,
     'post-detail': Detail,
-    'post-meta': Meta,
     'related-post': Related,
     ProfileDialog
   },
@@ -101,7 +96,8 @@ export default {
       loading: false,
       deleteLoading: false,
       openProfileDialog: false,
-      hideComments: false
+      hideComments: false,
+      total_comments: 0
     }
   },
 
@@ -141,6 +137,7 @@ export default {
         if (!ok) throw new Error()
 
         this.post = data
+        this.total_comments = this.post.comments_count
       } catch (err) {
         const errCode = err?.response?.status
 

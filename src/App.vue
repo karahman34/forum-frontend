@@ -11,11 +11,13 @@
 <script>
 import AuthLayout from '@/layouts/auth/Template'
 import DefaultLayout from '@/layouts/default/Template'
+import PostLayout from '@/layouts/post/Template'
 
 export default {
   components: {
     AuthLayout,
-    DefaultLayout
+    DefaultLayout,
+    PostLayout
   },
 
   computed: {

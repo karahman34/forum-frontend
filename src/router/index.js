@@ -68,6 +68,9 @@ const routes = [
   {
     path: '/post/:id/:slug',
     name: 'Post',
+    meta: {
+      layout: 'post'
+    },
     component: () => import('@/views/Post')
   },
   {

@@ -3,8 +3,9 @@
     <!-- Header -->
     <div class="mb-1 columns is-mobile is-vcentered">
       <div class="column">
+        <!-- Total Comments -->
         <div class="has-text-weight-semibold subtitle mb-0">
-          {{ post.comments_count }}
+          {{ totalComments }}
           Comments
         </div>
       </div>
@@ -73,7 +74,7 @@
         :key="comment.id"
         :post="post"
         :comment="comment"
-        class="mb-3"
+        class="mt-1"
         @open-profile=";(openProfileDialog = true), (focusProfile = $event)"
         @edit="openEditCommentDialog"
         @deleted="commentDeletedHandler"
@@ -85,6 +86,7 @@
         v-if="total && !hidePagination"
         :total="total"
         v-model="page"
+        class="mt-3"
       ></pagination>
     </template>
 
@@ -125,6 +127,10 @@ export default {
   props: {
     post: {
       type: Object,
+      required: true
+    },
+    totalComments: {
+      type: Number,
       required: true
     }
   },
@@ -181,6 +187,9 @@ export default {
   },
 
   methods: {
+    editTotalCommentsEvent(val) {
+      this.$emit('total-comments', val)
+    },
     openCreateCommentDialog() {
       if (!this.loggedIn) {
         return this.$router.push({
@@ -202,6 +211,7 @@ export default {
       this.sort = 'new'
       this.comments = {}
       this.getComments()
+      this.editTotalCommentsEvent(this.totalComments + 1)
     },
     commentUpdatedHandler() {
       this.comments = {}
@@ -209,6 +219,7 @@ export default {
     },
     commentDeletedHandler() {
       this.getComments()
+      this.editTotalCommentsEvent(this.totalComments - 1)
     },
     markSolutionHandler(comment) {
       const focusCommentIndex = this.comments[this.page].findIndex(

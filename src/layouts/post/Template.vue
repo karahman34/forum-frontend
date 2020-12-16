@@ -1,7 +1,8 @@
 <template>
-  <div class="default-template">
+  <div class="post-template">
     <!-- Navbar -->
     <nav-bar
+      id="post-navbar"
       :new-notifications="new_notifications"
       @click-notifications="notificationDialog = !notificationDialog"
     ></nav-bar>
@@ -126,12 +127,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-section.section {
-  background-color: #f3f3f3 !important;
-  padding-top: 85px;
+#post-navbar {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.default-template {
+section.section {
+  background-color: white !important;
+  padding-top: 85px;
+  width: 100%;
+  height: 100%;
+}
+
+.post-template {
   position: relative;
   width: 100%;
   height: 100%;

@@ -76,13 +76,13 @@ export default {
   width: 100% !important;
 
   .ti-tag {
-    color: #1d72aa;
-    background-color: #eef6fc;
+    color: #1d72aa !important;
+    background-color: #eef6fc !important;
   }
 
   .ti-tag.ti-deletion-mark {
-    color: #cc0f35;
-    background-color: #feecf0;
+    color: #cc0f35 !important;
+    background-color: #feecf0 !important;
   }
 }
 </style>
