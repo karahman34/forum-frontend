@@ -62,7 +62,7 @@
       </div>
       <div class="column is-3">
         <!-- Related Posts -->
-        <related-post class="mt-4" :post="post"></related-post>
+        <related-post :post="post"></related-post>
       </div>
     </div>
 

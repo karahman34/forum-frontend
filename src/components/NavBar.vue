@@ -74,6 +74,20 @@
               >
             </div>
 
+            <!-- Profile -->
+            <div class="navbar-item nav-only-mobile">
+              <router-link :to="{ name: 'Profile' }" class="text">
+                Profile
+              </router-link>
+            </div>
+
+            <!-- Logout -->
+            <div class="navbar-item nav-only-mobile">
+              <div class="text" @click="goLogout">
+                Logout
+              </div>
+            </div>
+
             <!-- Notifications -->
             <div
               class="navbar-item notification-trigger-desktop is-clickable is-hidden-touch"
@@ -86,15 +100,13 @@
             </div>
 
             <!-- User Dropdown -->
-            <div class="navbar-item">
-              <div
-                class="dropdown is-hoverable"
-                :class="{ 'is-active': openUserDropdown }"
-              >
+            <div class="navbar-item user-profile-dropdown">
+              <div class="dropdown" :class="{ 'is-active': userDropdown }">
                 <!-- Trigger -->
                 <div
                   class="dropdown-trigger is-flex is-align-items-center"
-                  @click="openUserDropdown = !openUserDropdown"
+                  style="cursor: pointer;"
+                  @click="userDropdown = !userDropdown"
                 >
                   <img :src="user.avatar" class="avatar" />
                   <span class="mx-2">{{ user.username }}</span>
@@ -151,8 +163,8 @@ export default {
   data() {
     return {
       showNavbarMenu: false,
-      openUserDropdown: false,
-      logoutLoading: false
+      logoutLoading: false,
+      userDropdown: false
     }
   },
 
@@ -163,6 +175,17 @@ export default {
     }),
     appName() {
       return process.env.VUE_APP_NAME
+    }
+  },
+  watch: {
+    $route() {
+      if (this.userDropdown) {
+        this.userDropdown = !this.userDropdown
+      }
+
+      if (this.showNavbarMenu) {
+        this.showNavbarMenu = !this.showNavbarMenu
+      }
     }
   },
 
@@ -305,6 +328,20 @@ export default {
     &:hover {
       background-color: #f3f3f3 !important;
     }
+  }
+}
+
+.nav-only-mobile {
+  display: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .user-profile-dropdown {
+    display: none;
+  }
+
+  .nav-only-mobile {
+    display: block;
   }
 }
 </style>

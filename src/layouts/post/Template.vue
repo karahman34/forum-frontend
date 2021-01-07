@@ -135,6 +135,7 @@ section.section {
   background-color: white !important;
   padding-top: 85px;
   width: 100%;
+  min-height: 100vh;
   height: 100%;
 }
 
@@ -142,5 +143,11 @@ section.section {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    padding-top: 10px;
+  }
 }
 </style>

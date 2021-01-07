@@ -4,7 +4,7 @@
     <div class="mb-1 columns is-mobile is-vcentered">
       <div class="column">
         <!-- Total Comments -->
-        <div class="has-text-weight-semibold subtitle mb-0">
+        <div class="total-comments has-text-weight-semibold subtitle mb-0">
           {{ totalComments }}
           Comments
         </div>
@@ -257,3 +257,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+@media screen and (max-width: 1024px) {
+  .total-comments {
+    font-size: 16px;
+  }
+}
+</style>
